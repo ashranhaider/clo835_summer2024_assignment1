@@ -19,19 +19,23 @@ jobs:
     - name: Log in to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Extract Git SHA
       id: vars
-      run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Build and push Docker image for MySQL service
       run: |
-        docker build -t my-mysql-service:${{ steps.vars.outputs.sha }} -f Dockerfile_mysql .
-        docker tag my-mysql-service:${{ steps.vars.outputs.sha }} ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ steps.vars.outputs.sha }}
-        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ steps.vars.outputs.sha }}
+        docker build -t my-mysql-service:${{ env.sha }} -f Dockerfile_mysql .
+        docker tag my-mysql-service:${{ env.sha }} ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }}
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }}
 
     - name: Build and push Docker image for the main service
       run: |
-        docker build -t my-main-service:${{ steps.vars.outputs.sha }} -f Dockerfile .
-        docker tag my-main-service:${{ steps.vars.outputs.sha }} ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ steps.vars.outputs.sha }}
-        docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ steps.vars.outputs.sha }}
+        docker build -t my-main-service:${{ env.sha }} -f Dockerfile .
+        docker tag my-main-service:${{ env.sha }} ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.sha }}
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.sha }}
