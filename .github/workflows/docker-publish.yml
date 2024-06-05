@@ -20,7 +20,7 @@ jobs:
 
 
     - name: Print AWS Access Key ID
-    run: echo "AWS Access Key ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+      run: echo "AWS Access Key ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
 
     - name: Print AWS Secret Access Key
       run: echo "AWS Secret Access Key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
