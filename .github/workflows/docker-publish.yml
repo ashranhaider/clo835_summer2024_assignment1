@@ -36,10 +36,10 @@ jobs:
         run: docker tag clo835assignment1:latest 927951398009.dkr.ecr.us-east-1.amazonaws.com/clo835assignment1:latest
 
       - name: tag mysql image
-        run: docker tag my_db:latest 927951398009.dkr.ecr.us-east-1.amazonaws.com/my_mysql_image:latest
+        run: docker tag my_db:latest 927951398009.dkr.ecr.us-east-1.amazonaws.com/ashran_my_mysql:latest
 
       - name: push app image
         run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/clo835assignment1:latest
 
       - name: push mysql image
-        run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/my_mysql_image:latest
+        run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/ashran_my_mysql:latest
