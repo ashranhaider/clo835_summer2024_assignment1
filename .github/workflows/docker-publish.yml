@@ -20,7 +20,7 @@ jobs:
         run: |
           aws configure set default.aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set default.aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.aws_session_tokken ${{ secrets.AWS_SESSION_TOKEN }}
+          aws configure set default.aws_session_token ${{ secrets.AWS_SESSION_TOKEN }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
           
       - name: login to ecr command
