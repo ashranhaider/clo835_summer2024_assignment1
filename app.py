@@ -4,7 +4,6 @@ import os
 import random
 import argparse
 
-# this is just some change to push new code version
 app = Flask(__name__)
 
 DBHOST = os.environ.get("DBHOST") or "localhost"
