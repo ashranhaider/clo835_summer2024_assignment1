@@ -28,12 +28,18 @@ jobs:
 
       - name: build app
         run: docker build -t clo835assignment1 .
-      
+
       - name: build mysql image
         run: docker build -t my_db -f Dockerfile_mysql .
-      
-      - name: build command 2
+
+      - name: tag app image
         run: docker tag clo835assignment1:latest 927951398009.dkr.ecr.us-east-1.amazonaws.com/clo835assignment1:latest
-       
-      - name: pusing to the container
+
+      - name: tag mysql image
+        run: docker tag my_db:latest 927951398009.dkr.ecr.us-east-1.amazonaws.com/my_mysql_image:latest
+
+      - name: push app image
         run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/clo835assignment1:latest
+
+      - name: push mysql image
+        run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/my_mysql_image:latest
