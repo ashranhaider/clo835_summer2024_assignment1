@@ -16,15 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Print AWS Access Key ID
-        run: echo "AWS Access Key ID ${{ secrets.AWS_ACCESS_KEY_ID }}"
-
-      - name: Print AWS Secret Access Key
-        run: echo "AWS Secret Access Key ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-      
-      - name: Print AWS Region
-        run: echo "AWS Region ${{ secrets.AWS_REGION }}"
-
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ${{ secrets.AWS_REGION }}
+          
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
