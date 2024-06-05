@@ -36,25 +36,25 @@ jobs:
         run: docker push 927951398009.dkr.ecr.us-east-1.amazonaws.com/clo835assignment1:latest
 
       
-      - name: Log in to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      # - name: Log in to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+      #     aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      - name: Extract Git SHA
-        id: vars
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      # - name: Extract Git SHA
+      #   id: vars
+      #   run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Build, tag, and push Docker image for MySQL service
-        run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD) -f Dockerfile_mysql .
-          docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD)
+      # - name: Build, tag, and push Docker image for MySQL service
+      #   run: |
+      #     docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD) -f Dockerfile_mysql .
+      #     docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD)
 
-      - name: Build, tag, and push Docker image for the main service
-        run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD) -f Dockerfile .
-          docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD)
+      # - name: Build, tag, and push Docker image for the main service
+      #   run: |
+      #     docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD) -f Dockerfile .
+      #     docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD)
