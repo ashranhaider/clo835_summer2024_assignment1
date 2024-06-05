@@ -20,13 +20,10 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set aws_session_tokken ${{ secrets.AWS_SESSION_TOKEN }}
+          aws configure set aws_session_token ${{ secrets.AWS_SESSION_TOKEN }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
           
-      - name: login push command
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 927951398009.dkr.ecr.us-east-1.amazonaws.com
-      
-      - name: Log in to Amazon ECR
+      - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
@@ -37,14 +34,14 @@ jobs:
 
       - name: Extract Git SHA
         id: vars
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: echo "SHA=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build, tag, and push Docker image for MySQL service
         run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD) -f Dockerfile_mysql .
-          docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD)
+          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.SHA }} -f Dockerfile_mysql .
+          docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.SHA }}
 
       - name: Build, tag, and push Docker image for the main service
         run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD) -f Dockerfile .
-          docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD)
+          docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.SHA }} -f Dockerfile .
+          docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.SHA }}
