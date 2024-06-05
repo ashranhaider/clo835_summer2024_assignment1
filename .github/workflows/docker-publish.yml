@@ -28,14 +28,12 @@ jobs:
       id: vars
       run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-    - name: Build and push Docker image for MySQL service
+    - name: Build, tag, and push Docker image for MySQL service
       run: |
-        docker build -t my-mysql-service:${{ env.sha }} -f Dockerfile_mysql .
-        docker tag my-mysql-service:${{ env.sha }} ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }}
-        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }}
+        docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD) -f Dockerfile_mysql .
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD)
 
-    - name: Build and push Docker image for the main service
+    - name: Build, tag, and push Docker image for the main service
       run: |
-        docker build -t my-main-service:${{ env.sha }} -f Dockerfile .
-        docker tag my-main-service:${{ env.sha }} ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.sha }}
-        docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:${{ env.sha }}
+        docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD) -f Dockerfile .
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD)
