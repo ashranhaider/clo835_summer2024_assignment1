@@ -16,14 +16,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
-    - name: Print AWS Access Key ID
-      run: echo "AWS Access Key ID:"
 
-    - name: Print AWS Secret Access Key
-      run: echo "AWS Secret Access Key"
-      
-    - name: Print AWS Region
-      run: echo "AWS Region:"
+
 
     - name: Install AWS CLI
       run: |
@@ -46,9 +40,10 @@ jobs:
 
     - name: Build, tag, and push Docker image for MySQL service
       run: |
-        docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }} -f Dockerfile_mysql .
-        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:${{ env.sha }}
+        docker build -t ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD) -f Dockerfile_mysql .
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-mysql-service:$(git rev-parse --short HEAD)
 
     - name: Build, tag, and push Docker image for the main service
       run: |
-        docker build -t ${{ secrets.EC
+        docker build -t ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD) -f Dockerfile .
+        docker push ${{ secrets.ECR_REPOSITORY }}/my-main-service:$(git rev-parse --short HEAD)
